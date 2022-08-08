@@ -1,12 +1,15 @@
 ################################################################
 
 # Import Python Modules #
+from flask import Flask, render_template, redirect, url_for, request
 from open_gopro import GoPro, Params, GoProResp
 from goprocam import GoProCamera
 
 from datetime import datetime
 import time
 import os
+import sys
+sys.dont_write_bytecode = True
 
 ################################################################
 
@@ -15,6 +18,7 @@ homeDir = os.getcwd()
 mediaDir = homeDir + '\Media'
 
 ################################################################
+# CUSTOM FUNCTIONS #
 
 # Establish GoPro connection #
 def open_connection_gopro():
@@ -39,7 +43,7 @@ def take_photo(gopro, photo_type):
     elif photo_type == 'Night Photo':
         gopro.ble_command.load_preset(Params.Preset.NIGHT_PHOTO)
 
-    time.sleep(3)
+    time.sleep(1)
 
     gopro.ble_command.set_shutter(Params.Shutter.ON)
     gopro.ble_command.set_shutter(Params.Shutter.OFF)
@@ -47,6 +51,9 @@ def take_photo(gopro, photo_type):
     print('-'*75)
     print(f'{photo_type} taken !!!')
     print('-'*75)
+
+    mediaFiles, mediaFilenames = extract_mediaList(gopro)
+    download_files('Last', mediaFilenames)
 
     return None
 
@@ -63,7 +70,7 @@ def take_video(gopro, video_type, duration):
     elif video_type == 'Slow Motion':
         gopro.ble_command.load_preset(Params.Preset.SLOMO_EB)
 
-    time.sleep(3)
+    time.sleep(1)
 
     gopro.ble_command.set_shutter(Params.Shutter.ON)
     time.sleep(duration)
@@ -72,6 +79,9 @@ def take_video(gopro, video_type, duration):
     print('-'*75)
     print(f'{video_type} Video taken !!!')
     print('-'*75)
+
+    mediaFiles, mediaFilenames = extract_mediaList(gopro)
+    download_files('Last', mediaFilenames)
 
     return None
 
@@ -88,7 +98,7 @@ def start_video(gopro, video_type):
     elif video_type == 'Slow Motion':
         gopro.ble_command.load_preset(Params.Preset.SLOMO_EB)
 
-    time.sleep(3)
+    time.sleep(1)
 
     gopro.ble_command.set_shutter(Params.Shutter.ON)
 
@@ -106,26 +116,38 @@ def stop_video(gopro):
     print(f'Video recording stopped ...')
     print('-'*75)
 
+    mediaFiles, mediaFilenames = extract_mediaList(gopro)
+    download_files('Last', mediaFilenames)
+
     return None
 
 
 # Extract Media List #
 def extract_mediaList(gopro):
 
-    media_list = gopro.wifi_command.get_media_list().flatten
-    media_list.reverse()
-    
-    mediaFilenames = [val['n'] for val in media_list]
-    mediaTimestamp = [val['cre'] for val in media_list]
-    mediaDates = [datetime.fromtimestamp(int(val)) for val in mediaTimestamp]
+    try:
+        media_list = gopro.wifi_command.get_media_list().flatten
+        media_list.reverse()
+        
+        mediaFilenames = [val['n'] for val in media_list]
+        mediaTimestamp = [val['cre'] for val in media_list]
+        mediaDates = [datetime.fromtimestamp(int(val)) for val in mediaTimestamp]
 
-    mediaDict = dict(zip(mediaFilenames, mediaDates))
-    
-    print('-'*75)
-    print(f'Media Files --->')
-    for key, val in mediaDict.items():
-        print(f'{key} | {val}')
-    print('-'*75)
+        mediaDict = dict(zip(mediaFilenames, mediaDates))
+        
+        print('-'*75)
+        print(f'Media Files --->')
+        for key, val in mediaDict.items():
+            print(f'{key} | {val}')
+        print('-'*75)
+
+    except:
+
+        print('-'*75)
+        print(f'No Media files in SD Card')
+        mediaDict = {} 
+        mediaFilenames = []
+        print('-'*75)
 
     return mediaDict, mediaFilenames
 
@@ -162,22 +184,56 @@ def close_connection_gopro(gopro):
 
 
 # Delete Media #
-def delete_mediaFile(deleteType):
+def delete_mediaFile(gopro, deleteType):
+    
+    if gopro != '-':
+        close_connection_gopro(gopro)
 
-    goProCam = GoProCamera.GoPro()
+    try:
 
-    if deleteType in ['Last', 'All']:
-        
-        goProCam.delete(deleteType)
+        print('-'*75)
+        goProCam = GoProCamera.GoPro()
+        print('-'*75)
 
-    return None
+        if deleteType in ['last', 'all']:
+            
+            goProCam.delete(deleteType)
 
-################################################################
+        print('-'*75)
+        print(f'{deleteType.capitalize()} media deleted !!! ')
+        print('-'*75)
+
+    except:
+
+        print('*** ERROR DELETING FILES ***')
+
+    gopro = open_connection_gopro()
+
+    return gopro
+
 ################################################################
 
 gopro = open_connection_gopro()
+close_connection_gopro(gopro)
 
 ################################################################
+
+app = Flask(__name__)
+app.config["CACHE_TYPE"] = "null"
+
+################################################################
+
+# HOME PAGE #
+
+@app.route('/')
+@app.route('/home')
+def homePage():
+
+    return render_template('0_Home_Page.html')
+
+
+################################################################
+
 
 # take_photo(gopro, 'Photo')
 
@@ -194,17 +250,19 @@ gopro = open_connection_gopro()
 ################################################################
 
 # mediaFiles, mediaFilenames = extract_mediaList(gopro)
-
-################################################################
-
 # download_files('All', mediaFilenames)
 
 ################################################################
 
-# delete_mediaFile('All')
+# gopro = delete_mediaFile('-', 'all')
 
 ################################################################
 
-close_connection_gopro(gopro)
+# close_connection_gopro(gopro)
+
+################################################################
+
+if __name__ == "__main__":
+    app.run(host='0.0.0.0',port=int(os.environ.get('PORT', 8080)), debug=False)
 
 ################################################################

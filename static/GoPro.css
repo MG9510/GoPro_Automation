@@ -1,0 +1,164 @@
+/*#############################################################################*/
+
+body {
+    margin: 0px;
+    padding: 0px;
+    box-sizing: border-box;
+    background-color: rgb(244, 244, 244)
+}
+
+a {
+    text-decoration: none;
+}
+
+img {
+    border-radius: 25px;
+    padding: 10px;
+}
+
+.flex-elem {
+    display: flex;
+    justify-content: center;
+    align-items: baseline;
+}
+
+.block-elem {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+
+
+.img-elem {
+    width: 100%;
+    height: 300px;
+    object-fit: cover;
+    border-radius: 25px;
+}
+
+/*#############################################################################*/
+
+@media (max-width: 540px) {
+
+    .header {
+        font-size: 44px;
+        font-weight: bold;
+    }
+    
+    .sub-header {
+        font-size: 34px;
+    }
+    
+    .title {
+        font-size: 26px;
+    }
+    
+    .sub-title {
+        font-size: 20px;
+    }
+    
+    .text {
+        font-size: 16px;
+    }
+    
+    .sub-text {
+        font-size: 14px;
+    }
+
+}
+
+/*#############################################################################*/
+
+@media (min-width: 540px) and (max-width: 960px) {
+
+    .header {
+        font-size: 46px;
+        font-weight: bold;
+    }
+    
+    .sub-header {
+        font-size: 36px;
+    }
+    
+    .title {
+        font-size: 28px;
+    }
+    
+    .sub-title {
+        font-size: 22px;
+    }
+    
+    .text {
+        font-size: 18px;
+    }
+    
+    .sub-text {
+        font-size: 16px;
+    }
+
+}
+
+/*#############################################################################*/
+
+@media (min-width: 960px) and (max-width: 1320px) {
+
+    .header {
+        font-size: 48px;
+        font-weight: bold;
+    }
+    
+    .sub-header {
+        font-size: 38px;
+    }
+    
+    .title {
+        font-size: 30px;
+    }
+    
+    .sub-title {
+        font-size: 24px;
+    }
+    
+    .text {
+        font-size: 20px;
+    }
+    
+    .sub-text {
+        font-size: 18px;
+    }
+
+}
+
+/*#############################################################################*/
+
+@media (min-width: 1320px) {
+
+    .header {
+        font-size: 50px;
+        font-weight: bold;
+    }
+    
+    .sub-header {
+        font-size: 40px;
+    }
+    
+    .title {
+        font-size: 32px;
+    }
+    
+    .sub-title {
+        font-size: 26px;
+    }
+    
+    .text {
+        font-size: 22px;
+    }
+    
+    .sub-text {
+        font-size: 20px;
+    }
+
+}
+
+/*#############################################################################*/
