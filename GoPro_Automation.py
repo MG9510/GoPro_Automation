@@ -214,7 +214,6 @@ def delete_mediaFile(gopro, deleteType):
 ################################################################
 
 gopro = open_connection_gopro()
-close_connection_gopro(gopro)
 
 ################################################################
 
@@ -226,16 +225,54 @@ app.config["CACHE_TYPE"] = "null"
 # HOME PAGE #
 
 @app.route('/')
-@app.route('/home')
 def homePage():
 
-    return render_template('0_Home_Page.html')
+    return render_template('1_Home_Page.html')
+
+################################################################
+
+# CLICK PHOTO #
+
+@app.route('/takePhoto/<photoType>')
+def takePhoto(photoType):
+
+    take_photo(gopro, photoType)
+
+    return render_template('1_Home_Page.html')
 
 
 ################################################################
 
+# START VIDEO REC. #
 
-# take_photo(gopro, 'Photo')
+@app.route('/startVideo/<videoType>')
+def startVideo(videoType):
+
+    start_video(gopro, videoType)
+
+    return render_template('2_Recording.html')
+
+################################################################
+
+# START VIDEO REC. #
+
+@app.route('/stopVideo')
+def stopVideo():
+
+    stop_video(gopro)
+
+    return render_template('1_Home_Page.html')
+
+################################################################
+
+# START VIDEO REC. #
+
+@app.route('/disconnect')
+def disconnect():
+
+    close_connection_gopro(gopro)
+
+    return render_template('1_Home_Page.html')
 
 ################################################################
 

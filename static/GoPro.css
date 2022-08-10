@@ -3,6 +3,7 @@
 body {
     margin: 0px;
     padding: 0px;
+    height: 100vh;
     box-sizing: border-box;
     background-color: rgb(244, 244, 244)
 }
@@ -14,6 +15,19 @@ a {
 img {
     border-radius: 25px;
     padding: 10px;
+}
+
+.img-elem {
+    width: 100%;
+    height: 300px;
+    object-fit: cover;
+    border-radius: 25px;
+}
+
+div#loading {
+    width: 100%;
+    height: 100%;
+    cursor: wait;
 }
 
 .flex-elem {
@@ -29,13 +43,6 @@ img {
 }
 
 
-
-.img-elem {
-    width: 100%;
-    height: 300px;
-    object-fit: cover;
-    border-radius: 25px;
-}
 
 /*#############################################################################*/
 
