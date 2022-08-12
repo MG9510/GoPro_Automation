@@ -17,15 +17,31 @@
     </div>
     <div id="content">      
         <nav class="navbar bg-dark" style="display:flex">
-            <img class="mx-auto" src="{{ url_for('static', filename='GoPro_Camera.jpg') }}" alt="">
+            <img class="mx-auto" src="{{ url_for('static', filename='media/GoPro_Camera.jpg') }}" alt="">
             <div class="block-elem">
                 <p class="header mx-auto" style="color:white; text-align: center;">GoPro Dashboard</p>
                 <hr style="border: 2px solid white;">
                 <p class="title mx-auto" style="color:white; text-align: center;">Shoot Pictures, Videos and much more</p>
             </div>
         </nav>
+        <hr style="border: 2px solid black;">     
         {% block content %}
         {% endblock %}
+        <hr style="border: 2px solid black;">
+        <div class="flex-elem">
+            <div class="col">
+                <a href="{{ url_for('disconnect', gopro = gopro) }}" class=" btn btn-dark title" style="width: 100%;" onclick="loading();">
+                    <div class="flex-elem">
+                        <div class="flex-elem" style="margin-right: 25px;">
+                            <i class="fa-solid fa-ban title"></i>
+                        </div>  
+                        <div class="flex-elem">
+                            <p class="title" style="text-align: center;">Disconnect GoPro</p>
+                        </div> 
+                    </div>                    
+                </a>
+            </div>
+        </div>
     </div>
 </body>
 <footer>

@@ -6,6 +6,7 @@ from open_gopro import GoPro, Params, GoProResp
 from goprocam import GoProCamera
 
 from datetime import datetime
+import json
 import time
 import os
 import sys
@@ -231,6 +232,17 @@ def homePage():
 
 ################################################################
 
+# Disconnect GoPro #
+
+@app.route('/disconnect')
+def disconnect():
+
+    close_connection_gopro(gopro)
+
+    return render_template('1_Home_Page.html')
+
+################################################################
+
 # CLICK PHOTO #
 
 @app.route('/takePhoto/<photoType>')
@@ -260,17 +272,6 @@ def startVideo(videoType):
 def stopVideo():
 
     stop_video(gopro)
-
-    return render_template('1_Home_Page.html')
-
-################################################################
-
-# START VIDEO REC. #
-
-@app.route('/disconnect')
-def disconnect():
-
-    close_connection_gopro(gopro)
 
     return render_template('1_Home_Page.html')
 
