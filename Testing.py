@@ -149,7 +149,7 @@ def extract_mediaList(gopro):
 
 
 # Download Media files #
-def download_files(downloadType, mediaFilenames):
+def download_files(gopro, downloadType, mediaFilenames):
 
     if downloadType == 'Last':
 
@@ -158,7 +158,10 @@ def download_files(downloadType, mediaFilenames):
     else:
 
         for filename in mediaFilenames:
-            gopro.wifi_command.download_file(filename)
+
+            if filename not in os.listdir(homeDir):
+
+                gopro.wifi_command.download_file(filename)
 
     print('-'*75)
     print(f'Downloaded {downloadType} media file !!!')
@@ -185,28 +188,21 @@ def delete_mediaFile(gopro, deleteType):
     if gopro != '-':
         close_connection_gopro(gopro)
 
-    try:
+    print('-'*75)
+    goProCam = GoProCamera.GoPro()
+    print('-'*75)
 
-        print('-'*75)
-        goProCam = GoProCamera.GoPro()
-        print('-'*75)
+    if deleteType in ['last', 'all']:
+        
+        goProCam.delete(deleteType)
 
-        if deleteType in ['last', 'all']:
-            
-            goProCam.delete(deleteType)
-
-        print('-'*75)
-        print(f'{deleteType.capitalize()} media deleted !!! ')
-        print('-'*75)
-
-    except:
-
-        print('*** ERROR DELETING FILES ***')
+    print('-'*75)
+    print(f'{deleteType.capitalize()} media deleted !!! ')
+    print('-'*75)
 
     gopro = open_connection_gopro()
 
     return gopro
-
 
 ################################################################
 
@@ -229,14 +225,11 @@ gopro = open_connection_gopro()
 ################################################################
 
 mediaFiles, mediaFilenames = extract_mediaList(gopro)
-
-################################################################
-
 # download_files(gopro, 'All', mediaFilenames)
 
 ################################################################
 
-# delete_mediaFile('all')
+# delete_mediaFile('-', 'all')
 # mediaFiles, mediaFilenames = extract_mediaList(gopro)
 
 ################################################################
