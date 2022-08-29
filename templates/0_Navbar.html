@@ -28,7 +28,19 @@
         {% block content %}
         {% endblock %}
         <hr style="border: 2px solid black;">
-        <div class="flex-elem">
+        <div class="flex-elem">            
+            <div class="col">
+                <a href="{{ url_for('downloadDelete') }}" class=" btn btn-success title" style="width: 100%;" onclick="loading();">
+                    <div class="flex-elem">
+                        <div class="flex-elem" style="margin-right: 25px;">
+                            <i class="fa-solid fa-download title"></i>
+                        </div>  
+                        <div class="flex-elem">
+                            <p class="title" style="text-align: center;">Download Media & Clear Memory</p>
+                        </div> 
+                    </div>                    
+                </a>
+            </div>
             <div class="col">
                 <a href="{{ url_for('disconnect', gopro = gopro) }}" class=" btn btn-dark title" style="width: 100%;" onclick="loading();">
                     <div class="flex-elem">

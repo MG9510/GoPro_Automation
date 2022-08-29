@@ -89,22 +89,14 @@ def stopVideo():
 
 ################################################################
 
-# Download Media Files #
+# Download & Delete Media Files #
 
-@app.route('/downloadMedia')
-def download():
+@app.route('/downloadDeleteMedia')
+def downloadDelete():
 
     mediaFiles, mediaFilenames = extract_mediaList(gopro)
     download_files(gopro, 'All', mediaFilenames)
-
-    return render_template('1_Home_Page.html')
-
-################################################################
-
-@app.route('/deleteMedia')
-def delete():
-
-    gopro = delete_mediaFile('all')
+    delete_mediaFile('all')
 
     return render_template('1_Home_Page.html')
 
